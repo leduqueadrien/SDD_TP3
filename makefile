@@ -1,25 +1,22 @@
-#options
+#option
 CFLAGS = -Wall -Wextra -g -MMD
 LIB = -lm
 
-SRC = $(wildcard src/*.c)
+SRC = $(wildcard src/*.c) $(wildcard src/arbre/*.c) $(wildcard src/file/*.c) $(wildcard src/pile/*.c)
 OBJ = $(patsubst src/%.c,build/%.o,$(SRC))
 DEP = $(patsubst %.o,%.d,$(OBJ))
 
 .PHONY: all
 all: bin/executable
-	@echo "Executer avec ./bin/executable"
 
-#édition des liens
 bin/executable: $(OBJ)
-	@mkdir -p $(@D) #créer le dossier bin, s'il n'existe pas
-	gcc -o $@ $^ $(LIB)
+	@mkdir -p $(@D)
+	cc -o $@ $^ $(LIB)
+	@echo "executer avec ./bin/executable"
 
-#génère les fichiers .o (dans build) à partir des fichiers .c (dans src) du même nom
-#comppilation
 build/%.o: src/%.c
-	@mkdir -p $(@D) #créer le dossier build, s'il n'existe pas
-	gcc -c $< $(CFLAGS) -o $@
+	@mkdir -p $(@D)
+	cc -c $< $(CFLAGS) -o $@
 
 .PHONY: clean
 clean:
